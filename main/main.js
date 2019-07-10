@@ -68,22 +68,22 @@ function printReceipt(tags){
                 let item=getItem(i);
                 oldSum+=itemCount[i]*item.price;
                 newSum+=(itemCount[i]-Math.floor(itemCount[i]/3))*item.price;
-                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${item.price}(元)，小计：${(itemCount[i]-Math.floor(itemCount[i]/3))*item.price}(元)\n`;
+                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${(item.price).toFixed(2)}(元)，小计：${((itemCount[i]-Math.floor(itemCount[i]/3))*item.price).toFixed(2)}(元)\n`;
             }
             else{
                 let item=getItem(i);
                 oldSum+=itemCount[i]*item.price;
                 newSum+=itemCount[i]*item.price;
-                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${item.price}(元)，小计：${(itemCount[i]-Math.floor(itemCount[i]/3))*item.price}(元)\n`;
+                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${(item.price).toFixed(2)}(元)，小计：${((itemCount[i]-Math.floor(itemCount[i]/3))*item.price).toFixed(2)}(元)\n`;
             }
         }
         else{
                 let item=getItem(i);
                 oldSum+=itemCount[i]*item.price;
                 newSum+=itemCount[i]*item.price;
-                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${item.price}(元)，小计：${(itemCount[i]-Math.floor(itemCount[i]/3))*item.price}(元)\n`;
+                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${(item.price).toFixed(2)}(元)，小计：${((itemCount[i]-Math.floor(itemCount[i]/3))*item.price).toFixed(2)}(元)\n`;
         }
     }
-    result+=`----------------------\n总计：${newSum}(元)\n节省：${oldSum-newSum}(元)\n**********************`
+    result+=`----------------------\n总计：${newSum.toFixed(2)}(元)\n节省：${(oldSum-newSum).toFixed(2)}(元)\n**********************`
     console.log(result);
 }
