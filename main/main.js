@@ -15,28 +15,30 @@ function isContainItem(tags){
     else return false;
 }
 
-function getItemList(tags){
-    const allItems=loadAllItems();
-    const itemList={};
-    tags.forEach(tag=>{
-        allItems.forEach(item=>{
-            if(tag.split("-")[0]===item.barcode){
-                if(tag.split("-")[1]!==null){
-                    itemList[item]=itemList[item]>=1?itemList[item]+tag.split("-")[1]:tag.split("-")[1];
-                }
-                else itemList[item]=itemList[item]>=1?itemList[item]+1:1;
-            }
-        });
+function getItemCount(tags){
+    const itemCount=[];
+    tags.filter((tag)=>{
+        if(tag.indexOf("-")!==-1){
+            let barcode=tag.split("-")[0];
+            let number=parseFloat(tag.split("-")[1]);
+            if (itemCount[barcode]===undefined)
+                itemCount[barcode]=number;
+            else itemCount[barcode]+=number;
+
+        }
+        else{
+            let barcode=tag;
+            if (itemCount[barcode]==undefined)
+                itemCount[barcode]=1;
+            else itemCount[barcode]+=1;
+        }
     });
-    return itemList;
+    return itemCount;
 }
 function printReceipt(tags){
-    const itemList=getItemList(tags);
+    const itemList=getItemCount(tags);
     const promotions=loadPromotions()[0]['barcodes'];
-    for(let i in itemList){
-        for(let j in promotions){
-            if(i.barcode){}
-        }
-    }
+    
+    console.log(itemList);
 
 }
