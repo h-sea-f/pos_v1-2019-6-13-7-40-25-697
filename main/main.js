@@ -35,10 +35,55 @@ function getItemCount(tags){
     });
     return itemCount;
 }
-function printReceipt(tags){
-    const itemList=getItemCount(tags);
-    const promotions=loadPromotions()[0]['barcodes'];
-    
-    console.log(itemList);
 
+function isPromotion(barcode){
+    const promotions=loadPromotions()[0].barcodes;
+    let flag=0;
+    promotions.forEach((promotionBarcode)=>{
+        if(barcode.split('-')[0]===promotionBarcode){flag=1;}
+    })
+    if(flag==0) return false;
+    else return true;
+}
+
+function getItem(itemBarcode){
+    const allItems=loadAllItems();
+    let item;
+    for(let i=0;i<allItems.length;i++){
+        if(itemBarcode===allItems[i].barcode){
+            item=allItems[i];
+            break;
+        }
+    }
+    return item;
+}
+function printReceipt(tags){
+    const itemCount=getItemCount(tags);
+    let oldSum=0;
+    let newSum=0;
+    let result="***<没钱赚商店>收据***\n"
+    for(let i in itemCount){
+        if(itemCount[i]>=3){
+            if(isPromotion(i)){
+                let item=getItem(i);
+                oldSum+=itemCount[i]*item.price;
+                newSum+=(itemCount[i]-Math.floor(itemCount[i]/3))*item.price;
+                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${item.price}(元)，小计：${(itemCount[i]-Math.floor(itemCount[i]/3))*item.price}(元)\n`;
+            }
+            else{
+                let item=getItem(i);
+                oldSum+=itemCount[i]*item.price;
+                newSum+=itemCount[i]*item.price;
+                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${item.price}(元)，小计：${(itemCount[i]-Math.floor(itemCount[i]/3))*item.price}(元)\n`;
+            }
+        }
+        else{
+                let item=getItem(i);
+                oldSum+=itemCount[i]*item.price;
+                newSum+=itemCount[i]*item.price;
+                result+=`名称：${item.name}，数量：${itemCount[i]}${item.unit}，单价：${item.price}(元)，小计：${(itemCount[i]-Math.floor(itemCount[i]/3))*item.price}(元)\n`;
+        }
+    }
+    result+=`----------------------\n总计：${newSum}(元)\n节省：${oldSum-newSum}(元)\n**********************`
+    console.log(result);
 }
