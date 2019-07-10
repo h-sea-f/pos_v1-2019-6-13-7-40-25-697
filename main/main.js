@@ -49,12 +49,11 @@ function isPromotion(barcode){
 function getItem(itemBarcode){
     const allItems=loadAllItems();
     let item;
-    for(let i=0;i<allItems.length;i++){
-        if(itemBarcode===allItems[i].barcode){
-            item=allItems[i];
-            break;
+    allItems.forEach((oneItem)=>{
+        if(oneItem.barcode===itemBarcode){
+            item=oneItem;
         }
-    }
+    });
     return item;
 }
 function printReceipt(tags){
